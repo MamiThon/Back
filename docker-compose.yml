@@ -1,0 +1,33 @@
+version: '3.4'
+
+volumes:
+  data:
+
+
+services:
+  Mamithon_backend:
+    image: mamithon_backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3030:3030"
+    environment:
+      NODE_ENV: production
+    volumes:
+      - .:/usr/src/app
+    links:
+      - Mamithon_bd
+
+  Mamithon_bd:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mamithon
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    volumes:
+      - data:/var/lib/mysql
+      - ./dev/mariadb:/docker-entrypoint-initdb.d
