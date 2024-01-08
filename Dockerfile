@@ -2,7 +2,7 @@
 FROM node:14
 
 # Définissez le répertoire de travail
-WORKDIR /usr/src/app
+WORKDIR /Back
 
 # Copiez les fichiers nécessaires
 COPY package*.json ./
