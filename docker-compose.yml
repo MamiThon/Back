@@ -5,21 +5,25 @@ volumes:
 
 
 services:
-  Mamithon_backend:
-    image: mamithon_backend
+  mamithonbackend:
+    image: mamithonbackend
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3030:3030"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+      DB_HOST: mamithonbd
+      DB_PORT: 3306
+      DB_USER: docker
+      DB_PASSWORD: docker
     volumes:
       - .:/usr/src/app
     links:
-      - Mamithon_bd
+      - mamithonbd
 
-  Mamithon_bd:
+  mamithonbd:
     image: mariadb
     ports:
       - "3306:3306"
