@@ -13,6 +13,7 @@ exports.createUser = async (req, res) => {
       password,
       creationDate: new Date(),
       modificationDate: new Date(),
+      role: 'user',
       creationUser: 'admin',
       modificationUser: 'admin',
     });
@@ -57,6 +58,7 @@ exports.getUserById = async (req, res) => {
         username,
         email,
         password,
+        role: 'user',
         modificationDate: new Date(),
         modificationUser: 'admin',
       });
