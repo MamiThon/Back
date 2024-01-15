@@ -17,6 +17,7 @@ services:
       DB_PORT: 3306
       DB_USER: docker
       DB_PASSWORD: docker
+      DB_NAME: mamithon
     volumes:
       - .:/usr/src/app
     links:
@@ -33,6 +34,7 @@ services:
       MYSQL_DATABASE: mamithon
       MYSQL_USER: docker
       MYSQL_PASSWORD: docker
+      MYSQL_NAME: mamithon
     volumes:
       - data:/var/lib/mysql
       - ./dev/mariadb:/docker-entrypoint-initdb.d
