@@ -3,7 +3,6 @@ version: '3.4'
 volumes:
   data:
 
-
 services:
   mamithonbackend:
     image: mamithonbackend
@@ -21,6 +20,8 @@ services:
     volumes:
       - .:/usr/src/app
     links:
+      - mamithonbd
+    depends_on:
       - mamithonbd
 
   mamithonbd:
