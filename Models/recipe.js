@@ -6,10 +6,11 @@ const CommonFields = {
   creationUser: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: 'user',
   },
   updateUser: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   active: {
     type: DataTypes.BOOLEAN,
@@ -43,7 +44,7 @@ const CategoryIngredient = sequelize.define('CategoryIngredient', {
   ...CommonFields,
 });
 
-const IngredientCategory = sequelize.define('IngredientCategory', {
+const IngredientCategory = sequelize.define('IngCat', {
   id_categorie_ingredient: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -53,6 +54,14 @@ const IngredientCategory = sequelize.define('IngredientCategory', {
     allowNull: false,
   },
   ...CommonFields,
+}, {
+  indexes: [
+    {
+      unique: true,
+      fields: ['id_categorie_ingredient', 'id_ingredient'],
+      name: 'ingcat_unique',
+    },
+  ],
 });
 
 const Ingredient = sequelize.define('Ingredient', {
@@ -67,6 +76,7 @@ const Ingredient = sequelize.define('Ingredient', {
   },
   ...CommonFields,
 });
+
 const Recipe = sequelize.define('Recipe', {
   id: {
     type: DataTypes.INTEGER,
@@ -114,7 +124,16 @@ const RecipeIngredient = sequelize.define('RecipeIngredient', {
     allowNull: false,
   },
   ...CommonFields,
+}, {
+  indexes: [
+    {
+      unique: true,
+      fields: ['id_recette', 'id_ingredient'],
+      name: 'recipe_ingredient',
+    },
+  ],
 });
+
 const RecipeCategory = sequelize.define('RecipeCategory', {
   id_categorie_recipe: {
     type: DataTypes.INTEGER,
@@ -125,7 +144,16 @@ const RecipeCategory = sequelize.define('RecipeCategory', {
     allowNull: false,
   },
   ...CommonFields,
+}, {
+  indexes: [
+    {
+      unique: true,
+      fields: ['id_categorie_recipe', 'id_recipe'],
+      name: 'recipe_category',
+    },
+  ],
 });
+
 // Relation Many-to-Many entre Recipe et CategoryRecipe
 Recipe.belongsToMany(CategoryRecipe, { through: 'RecipeCategory', foreignKey: 'id_recipe' });
 CategoryRecipe.belongsToMany(Recipe, { through: 'RecipeCategory', foreignKey: 'id_categorie_recipe' });

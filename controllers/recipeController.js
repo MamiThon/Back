@@ -5,7 +5,8 @@ async function createRecipe(req, res) {
   try {
     const { name, instruction, description, id_user, nb_people, ingredients, categories } = req.body;
 
-    const newRecipe = await Recipe.create({
+    // Création de la recette
+    const createdRecipe = await Recipe.create({
       name,
       instruction,
       description,
@@ -13,23 +14,57 @@ async function createRecipe(req, res) {
       nb_people,
     });
 
-    // Ajouter les ingrédients à la recette
+    // Ajout des ingrédients à la recette
     if (ingredients && ingredients.length > 0) {
-      await newRecipe.setIngredients(ingredients);
+      await Promise.all(
+        ingredients.map(async (ingredient) => {
+          const { id, quantity, unit } = ingredient;
+
+          // Vérification si l'ingrédient existe déjà dans la base de données
+          const existingIngredient = await Ingredient.findByPk(id);
+
+          // Si l'ingrédient n'existe pas, renvoyer une erreur
+          if (!existingIngredient) {
+            throw new Error(`L'ingrédient avec l'ID ${id} n'existe pas.`);
+          }
+
+          // Ajout de l'ingrédient à la recette avec la quantité et l'unité
+          await RecipeIngredient.create({
+            id_recette: createdRecipe.id,
+            id_ingredient: existingIngredient.id,
+            quantity,
+            unit,
+          });
+        })
+      );
     }
 
-    // Ajouter les catégories à la recette
+    // Ajout des catégories à la recette
     if (categories && categories.length > 0) {
-      await newRecipe.setCategoryRecipes(categories);
-    }
+      await Promise.all(
+        categories.map(async (categoryId) => {
+          // Vérification si la catégorie existe déjà dans la base de données
+          const existingCategory = await CategoryRecipe.findByPk(categoryId);
 
-    res.status(201).json(newRecipe);
+          // Si la catégorie n'existe pas, renvoyer une erreur
+          if (!existingCategory) {
+            throw new Error(`La catégorie avec l'ID ${categoryId} n'existe pas.`);
+          }
+
+          // Ajout de la catégorie à la recette
+          await RecipeCategory.create({
+            id_categorie_recipe: existingCategory.id,
+            id_recipe: createdRecipe.id,
+          });
+        })
+      );
+    }
+    res.status(201).json({ message: 'Recette créée avec succès', recipe: createdRecipe });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la création de la recette.' });
+    console.error('Erreur lors de la création de la recette:', error.message);
+    res.status(400).json({ message: error.message });
   }
 }
-
 // Opération READ - Récupérer toutes les recettes
 async function getAllRecipes(req, res) {
   try {
