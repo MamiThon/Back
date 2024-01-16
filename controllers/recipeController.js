@@ -64,7 +64,7 @@ async function createRecipe(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
-// Opération READ - Récupérer toutes les recettes
+// Opération READ - Récupérer toutes les recettes du blogs
 async function getAllRecipes(req, res) {
   try {
     const recipes = await Recipe.findAll({
