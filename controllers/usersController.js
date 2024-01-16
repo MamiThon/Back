@@ -20,7 +20,7 @@ exports.createUser = async (req, res) => {
       creationUser: 'admin',
       modificationUser: 'admin',
     });
-
+    
     const token = jwt.sign({ userId: newUser.id, username: newUser.username }, 'your-secret-key', { expiresIn: '1h' });
     res.status(201).json({ user: newUser, token });
   } catch (error) {
