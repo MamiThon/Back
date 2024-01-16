@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./sequelize');
 const userRoutes = require('./routes/routeUser');
 const recipeRoutes = require('./routes/routeRecipe');
+const categoryRoutes = require('./routes/routeCategory');
 
 const app = express();
 const port = 3030;
@@ -24,3 +25,4 @@ sequelize.sync({ force: false })
 // Utilisez le routeur pour les routes liées aux utilisateurs
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/categories', categoryRoutes);
