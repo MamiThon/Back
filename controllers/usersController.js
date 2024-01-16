@@ -29,7 +29,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUserById = (req, res) => {
     try {
       const userId = req.params.id;
       authenticateToken(req, res, async () => {
