@@ -7,6 +7,6 @@ router.post('/', userController.createUser);
 router.get('/:id',authenticateToken ,userController.getUserById);
 router.put('/:id', authenticateToken,userController.updateUserById);
 router.delete('/:id',authenticateToken ,userController.deleteUserById);
-router.get('/',userController.getUserByEmailAndPassword);
+router.post('/login',userController.getUserByEmailAndPassword);
 
 module.exports = router;
