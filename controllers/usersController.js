@@ -3,20 +3,24 @@ const User = require('../Models/Users');
 const { authenticateToken } = require('../middlewares/auth');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await User.create({
       username,
       email,
-      password,
+      password: hashedPassword,
       creationDate: new Date(),
       modificationDate: new Date(),
       role: 'user',
       creationUser: 'admin',
       modificationUser: 'admin',
     });
+    
     const token = jwt.sign({ userId: newUser.id, username: newUser.username }, 'your-secret-key', { expiresIn: '1h' });
     res.status(201).json({ user: newUser, token });
   } catch (error) {
