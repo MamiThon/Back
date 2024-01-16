@@ -4,8 +4,6 @@ const userRoutes = require('./routes/routeUser');
 
 const app = express();
 const port = 3030;
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // bypass CORS
 app.use((req, res, next) => {
@@ -14,6 +12,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Utilisez uniquement Sequelize pour la gestion de la base de données
 sequelize.sync({ force: false })
