@@ -3,20 +3,24 @@ const User = require('../Models/Users');
 const { authenticateToken } = require('../middlewares/auth');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await User.create({
       username,
       email,
-      password,
+      password: hashedPassword,
       creationDate: new Date(),
       modificationDate: new Date(),
       role: 'user',
       creationUser: 'admin',
       modificationUser: 'admin',
     });
+    
     const token = jwt.sign({ userId: newUser.id, username: newUser.username }, 'your-secret-key', { expiresIn: '1h' });
     res.status(201).json({ user: newUser, token });
   } catch (error) {
@@ -42,7 +46,23 @@ exports.getUserById = async (req, res) => {
       res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
     }
   };
+  exports.getUserByName = async (req, res) => {
+    try {
+      const Name = req.params.name;
+      authenticateToken(req, res, async () => {
+        const user = await User.findOne({ where: { username: Name } });
   
+        if (!user) {
+          return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+  
+        res.status(200).json(user);
+      });
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l\'utilisateur :', error);
+      res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
+    }
+  };
   exports.updateUserById = async (req, res) => {
     try {
       const userId = req.params.id;

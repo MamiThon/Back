@@ -3,6 +3,7 @@ const sequelize = require('./sequelize');
 const userRoutes = require('./routes/routeUser');
 const recipeRoutes = require('./routes/routeRecipe');
 const categoryRoutes = require('./routes/routeCategory');
+const ingredientRoutes = require('./routes/routeIngredient');
 
 const app = express();
 const port = 3030;
@@ -26,3 +27,4 @@ sequelize.sync({ force: false })
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/ingredients', ingredientRoutes);

@@ -9,7 +9,9 @@ router.post('/', recipeController.createRecipe);
 router.get('/', recipeController.getAllRecipes);
 
 // Récupérer une recette par ID
-router.get('/:id', recipeController.getRecipeById);
+router.get('/:name', recipeController.getRecipeByName);
+// Récupérer une recette par ID_User
+router.get('/:id_user', recipeController.getRecipeByUser);
 
 // Mettre à jour une recette par ID
 router.put('/:id', recipeController.updateRecipe);
