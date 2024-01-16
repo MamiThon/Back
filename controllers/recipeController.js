@@ -158,7 +158,7 @@ async function getRecipesByCategory(req, res) {
   }
 }
 
-// Opération UPDATE - Mettre à jour une recette par ID
+// Opération UPDATE - Mettre à jour une recette par ID t
 async function updateRecipe(req, res) {
   try {
     const { id } = req.params;
