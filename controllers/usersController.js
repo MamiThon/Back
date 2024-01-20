@@ -46,7 +46,23 @@ exports.getUserById = async (req, res) => {
       res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
     }
   };
+  exports.getUserByName = async (req, res) => {
+    try {
+      const Name = req.params.name;
+      authenticateToken(req, res, async () => {
+        const user = await User.findOne({ where: { username: Name } });
   
+        if (!user) {
+          return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+  
+        res.status(200).json(user);
+      });
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l\'utilisateur :', error);
+      res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
+    }
+  };
   exports.updateUserById = async (req, res) => {
     try {
       const userId = req.params.id;
