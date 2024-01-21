@@ -7,8 +7,6 @@ const ingredientRoutes = require('./routes/routeIngredient');
 
 const app = express();
 const port = 3030;
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // bypass CORS
 app.use((req, res, next) => {
