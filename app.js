@@ -1,9 +1,9 @@
 const express = require('express');
-const sequelize = require('./sequelize');
 const userRoutes = require('./routes/routeUser');
 const recipeRoutes = require('./routes/routeRecipe');
 const categoryRoutes = require('./routes/routeCategory');
 const ingredientRoutes = require('./routes/routeIngredient');
+const sequelize = require('./sequelize');
 
 const app = express();
 const port = 3030;
@@ -19,6 +19,13 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Utilisez le routeur pour les routes liées aux utilisateurs
+app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipeRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/ingredients', ingredientRoutes);
+app.get('/', (req,res,next)=>(res.send('Hello World')));
+
 // Utilisez uniquement Sequelize pour la gestion de la base de données
 sequelize.sync({ force: false })
   .then(() => {
@@ -32,8 +39,4 @@ sequelize.sync({ force: false })
     console.error('Erreur lors de la synchronisation de la base de données :', error);
   });
 
-// Utilisez le routeur pour les routes liées aux utilisateurs
-app.use('/api/users', userRoutes);
-app.use('/api/recipes', recipeRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/ingredients', ingredientRoutes);
+module.exports = app;
