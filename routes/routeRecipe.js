@@ -8,10 +8,14 @@ router.post('/', recipeController.createRecipe);
 // Récupérer toutes les recettes
 router.get('/', recipeController.getAllRecipes);
 
-// Récupérer une recette par ID
-router.get('/:name', recipeController.getRecipeByName);
+// afficher les 2 premiere recette
+router.get('/hilights', recipeController.get2FirstRecipes);
+
 // Récupérer une recette par ID_User
-router.get('/:id_user', recipeController.getRecipeByUser);
+router.get('/user/:id_user', recipeController.getRecipeByUser);
+
+// Récupérer une recette par ID
+router.get('/name/:name', recipeController.getRecipeByName);
 
 // Mettre à jour une recette par ID
 router.put('/:id', recipeController.updateRecipe);
