@@ -3,6 +3,7 @@ const userRoutes = require('./routes/routeUser');
 const recipeRoutes = require('./routes/routeRecipe');
 const categoryRoutes = require('./routes/routeCategory');
 const ingredientRoutes = require('./routes/routeIngredient');
+const sequelize = require('./sequelize');
 
 const app = express();
 const port = 3030;
@@ -24,5 +25,18 @@ app.use('/api/recipes', recipeRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/ingredients', ingredientRoutes);
 app.get('/', (req,res,next)=>(res.send('Hello World')));
+
+// Utilisez uniquement Sequelize pour la gestion de la base de données
+sequelize.sync({ force: false })
+  .then(() => {
+    console.log('Base de données synchronisée');
+    // Écoute du serveur sur le port spécifié une fois que la base de données est synchronisée
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Erreur lors de la synchronisation de la base de données :', error);
+  });
 
 module.exports = app;
