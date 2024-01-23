@@ -1,14 +1,11 @@
-const SequelizeMock = require("sequelize-mock");
+const sequelizeMock = require('../sequelize');
 const User = require('../Models/Users');
 const { createUser } = require("../controllers/usersController.js");
 const httpMocks = require('node-mocks-http');
 
 describe("User controller", () => {
-  let sequelizeMock;
-  let Users;
 
   beforeAll(() => {
-    sequelizeMock = new SequelizeMock();
     Users = sequelizeMock.define("User", {
         username: "testers",
         email: "tester@test.test",
