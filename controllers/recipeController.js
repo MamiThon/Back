@@ -58,10 +58,10 @@ async function createRecipe(req, res) {
         })
       );
     }
-    res.status(201).json({ message: 'Recette créée avec succès', recipe: createdRecipe });
+    return res.status(201).json({ message: 'Recette créée avec succès', recipe: createdRecipe });
   } catch (error) {
     console.error('Erreur lors de la création de la recette:', error.message);
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 }
 // Opération READ - Récupérer toutes les recettes du blogs
@@ -71,10 +71,10 @@ async function getAllRecipes(req, res) {
       include: [Ingredient, CategoryRecipe],
     });
 
-    res.status(200).json(recipes);
+    return res.status(200).json(recipes);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération des recettes.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération des recettes.' });
   }
 }
 
@@ -90,10 +90,10 @@ async function getRecipeById(req, res) {
       return res.status(404).json({ message: 'Recette non trouvée.' });
     }
 
-    res.status(200).json(recipe);
+    return res.status(200).json(recipe);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de la recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération de la recette.' });
   }
 }
 async function getRecipeByName(req, res) {
@@ -108,10 +108,10 @@ async function getRecipeByName(req, res) {
       return res.status(404).json({ message: 'Recette non trouvée.' });
     }
 
-    res.status(200).json(recipe);
+    return res.status(200).json(recipe);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de la recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération de la recette.' });
   }
 }
 async function getRecipeByUser(req, res) {
@@ -126,10 +126,10 @@ async function getRecipeByUser(req, res) {
       return res.status(404).json({ message: 'Recette non trouvée.' });
     }
 
-    res.status(200).json(recipe);
+    return res.status(200).json(recipe);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de la recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération de la recette.' });
   }
 }
 async function getRecipesByCategory(req, res) {
@@ -151,10 +151,10 @@ async function getRecipesByCategory(req, res) {
       return res.status(404).json({ message: 'Aucune recette trouvée pour cette catégorie.' });
     }
 
-    res.status(200).json(recipes);
+    return res.status(200).json(recipes);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération des recettes par catégorie.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération des recettes par catégorie.' });
   }
 }
 
@@ -231,10 +231,10 @@ async function updateRecipe(req, res) {
       );
     }
 
-    res.status(200).json({ message: 'Recette mise à jour avec succès', recipe: existingRecipe });
+    return res.status(200).json({ message: 'Recette mise à jour avec succès', recipe: existingRecipe });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la mise à jour de la recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la mise à jour de la recette.' });
   }
 }
 
@@ -250,10 +250,24 @@ async function deleteRecipe(req, res) {
 
     await deletedRecipe.destroy();
 
-    res.status(204).end();
+    return res.status(204).end();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la suppression de la recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la suppression de la recette.' });
+  }
+}
+async function get2FirstRecipes(req, res) {
+  try {
+    const recipes = await Recipe.findAll({
+      include: [Ingredient, CategoryRecipe],
+      limit: 2,
+      order: [['createdAt', 'ASC']],
+    });
+
+    return res.status(200).json(recipes);
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    return res.status(500).send('Internal Server Error');
   }
 }
 
@@ -266,4 +280,5 @@ module.exports = {
   getRecipeByName,
   getRecipesByCategory,
   getRecipeByUser,
+  get2FirstRecipes,
 };

@@ -28,10 +28,10 @@ async function createIngredient(req, res) {
       });
     }
 
-    res.status(201).json({ ingredient: newIngredient });
+    return res.status(201).json({ ingredient: newIngredient });
   } catch (error) {
     console.error('Erreur lors de la création de l\'ingrédient :', error);
-    res.status(500).json({ message: 'Erreur lors de la création de l\'ingrédient.' });
+    return res.status(500).json({ message: 'Erreur lors de la création de l\'ingrédient.' });
   }
 }
 
@@ -42,10 +42,10 @@ async function getAllIngredients(req, res) {
       include: [CategoryIngredient],
     });
 
-    res.status(200).json(ingredients);
+    return res.status(200).json(ingredients);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération des ingrédients.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération des ingrédients.' });
   }
 }
 
@@ -59,10 +59,10 @@ async function getIngredientByName(req, res) {
       return res.status(404).json({ message: 'Ingrédient non trouvé.' });
     }
 
-    res.status(200).json(ingredient);
+    return res.status(200).json(ingredient);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de l\'ingrédient.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération de l\'ingrédient.' });
   }
 }
 
@@ -113,10 +113,10 @@ async function updateIngredient(req, res) {
       }
     }
 
-    res.status(200).json(existingIngredient);
+    return res.status(200).json(existingIngredient);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'ingrédient.' });
+    return res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'ingrédient.' });
   }
 }
 
@@ -139,10 +139,10 @@ async function deleteIngredient(req, res) {
       },
     });
 
-    res.status(204).end();
+    return res.status(204).end();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la suppression de l\'ingrédient.' });
+    return res.status(500).json({ message: 'Erreur lors de la suppression de l\'ingrédient.' });
   }
 }
 

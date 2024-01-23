@@ -22,10 +22,10 @@ exports.createUser = async (req, res) => {
     });
     
     const token = jwt.sign({ userId: newUser.id, username: newUser.username }, 'your-secret-key', { expiresIn: '1h' });
-    res.status(201).json({ user: newUser, token });
+    return res.status(201).json({ user: newUser, token });
   } catch (error) {
     console.error('Erreur lors de la création de l\'utilisateur :', error);
-    res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur' });
+    return res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur' });
   }
 };
 
@@ -39,11 +39,11 @@ exports.getUserById = async (req, res) => {
           return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
   
-        res.status(200).json(user);
+        return res.status(200).json(user);
       });
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'utilisateur :', error);
-      res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
+      return res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
     }
   };
   exports.getUserByName = async (req, res) => {
@@ -56,11 +56,11 @@ exports.getUserById = async (req, res) => {
           return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
   
-        res.status(200).json(user);
+        return res.status(200).json(user);
       });
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'utilisateur :', error);
-      res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
+      return res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
     }
   };
   exports.updateUserById = async (req, res) => {
@@ -83,11 +83,11 @@ exports.getUserById = async (req, res) => {
         modificationUser: 'admin',
       });
   
-      res.status(200).json(updatedUser);
+      return res.status(200).json(updatedUser);
     });
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
-      res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur' });
+      return res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur' });
     }
   };
   
@@ -102,11 +102,11 @@ exports.getUserById = async (req, res) => {
   
       await existingUser.destroy();
   
-      res.status(204).send();
+      return res.status(204).send();
     });
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-      res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur' });
+      return res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur' });
     }
   };
   exports.getUserByEmailAndPassword = async (req, res) => {
@@ -125,9 +125,9 @@ exports.getUserById = async (req, res) => {
       }
       const token = jwt.sign({ userId: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
   
-      res.status(200).json({ user, token });
+      return res.status(200).json({ user, token });
     } catch (error) {
       console.error('Erreur lors de l\'authentification de l\'utilisateur :', error);
-      res.status(500).json({ message: 'Erreur lors de l\'authentification de l\'utilisateur' });
+      return res.status(500).json({ message: 'Erreur lors de l\'authentification de l\'utilisateur' });
     }
   };

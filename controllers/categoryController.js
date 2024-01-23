@@ -8,11 +8,13 @@ async function createRecipeCategory(req, res) {
     const createdCategory = await CategoryRecipe.create({
       name,
     });
-
-    res.status(201).json({ message: 'Catégorie créée avec succès', category: createdCategory });
+    if(name == null || name == ""){
+      return res.status(404).json({ message: 'Erreur lors de la création de la catégorie name est vide.' });
+    }
+    return res.status(201).json({ message: 'Catégorie créée avec succès', category: createdCategory });
   } catch (error) {
     console.error('Erreur lors de la création de la catégorie:', error.message);
-    res.status(400).json({ message: 'Erreur lors de la création de la catégorie.' });
+    return res.status(500).json({ message: 'Erreur lors de la création de la catégorie.' });
   }
 }
 
@@ -21,10 +23,9 @@ async function getAllRecipeCategories(req, res) {
   try {
     const categories = await CategoryRecipe.findAll();
 
-    res.status(200).json(categories);
+    return res.status(200).json(categories);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération des catégories de recettes.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération des catégories de recettes.' });
   }
 }
 
@@ -38,10 +39,10 @@ async function getRecipeCategoryByName(req, res) {
       return res.status(404).json({ message: 'Catégorie non trouvée.' });
     }
 
-    res.status(200).json(category);
+    return res.status(200).json(category);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de la catégorie de recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération de la catégorie de recette.' });
   }
 }
 
@@ -59,10 +60,10 @@ async function updateRecipeCategory(req, res) {
 
     await existingCategory.update({ name });
 
-    res.status(200).json(existingCategory);
+    return res.status(200).json(existingCategory);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la mise à jour de la catégorie de recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la mise à jour de la catégorie de recette.' });
   }
 }
 
@@ -78,10 +79,10 @@ async function deleteRecipeCategory(req, res) {
 
     await deletedCategory.destroy();
 
-    res.status(204).end();
+    return res.status(204).end();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la suppression de la catégorie de recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la suppression de la catégorie de recette.' });
   }
 }
 // Opération CREATE - Créer une nouvelle catégorie
@@ -93,10 +94,10 @@ async function createIngredientCategory(req, res) {
       name,
     });
 
-    res.status(201).json({ message: 'Catégorie créée avec succès', category: createdCategory });
+    return res.status(201).json({ message: 'Catégorie créée avec succès', category: createdCategory });
   } catch (error) {
     console.error('Erreur lors de la création de la catégorie:', error.message);
-    res.status(400).json({ message: 'Erreur lors de la création de la catégorie.' });
+    return res.status(400).json({ message: 'Erreur lors de la création de la catégorie.' });
   }
 }
 
@@ -105,10 +106,10 @@ async function getAllIngredientCategories(req, res) {
   try {
     const categories = await CategoryIngredient.findAll();
 
-    res.status(200).json(categories);
+    return res.status(200).json(categories);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération des catégories de recettes.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération des catégories de recettes.' });
   }
 }
 
@@ -122,10 +123,10 @@ async function getIngredientCategoryByName(req, res) {
       return res.status(404).json({ message: 'Catégorie non trouvée.' });
     }
 
-    res.status(200).json(category);
+    return res.status(200).json(category);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de la catégorie de recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la récupération de la catégorie de recette.' });
   }
 }
 
@@ -143,10 +144,10 @@ async function updateIngredientCategory(req, res) {
 
     await existingCategory.update({ name });
 
-    res.status(200).json(existingCategory);
+    return res.status(200).json(existingCategory);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la mise à jour de la catégorie de recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la mise à jour de la catégorie de recette.' });
   }
 }
 
@@ -162,10 +163,10 @@ async function deleteIngredientCategory(req, res) {
 
     await deletedCategory.destroy();
 
-    res.status(204).end();
+    return res.status(204).end();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la suppression de la catégorie de recette.' });
+    return res.status(500).json({ message: 'Erreur lors de la suppression de la catégorie de recette.' });
   }
 }
 module.exports = {
