@@ -3,9 +3,14 @@ const User = require('../Models/Users');
 const { authenticateToken } = require('../middlewares/auth');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Merci de remplir tous les champs' });
+    }
 
     const newUser = await User.create({
       username,
@@ -23,6 +28,7 @@ exports.createUser = async (req, res) => {
     console.error('Erreur lors de la création de l\'utilisateur :', error);
     res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur' });
   }
+  return res
 };
 
 exports.getUserById = (req, res) => {
